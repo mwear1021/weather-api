@@ -3,7 +3,7 @@
 import os
 import requests
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 
 
 load_dotenv()
@@ -36,6 +36,10 @@ def get_weather(city):
         "conditions": weather_data['weather'][0]['main']
     }
 
+@app.route('/')
+def redirect_to_weather():
+    return redirect('/weather')
+
 @app.route('/weather')
 def weather():
     city = request.args.get('city', 'New York')
@@ -47,7 +51,6 @@ def weather():
         return jsonify({"error": f"City '{city}' not found"}), 404
     
     return jsonify(result)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
