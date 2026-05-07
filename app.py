@@ -38,7 +38,7 @@ def get_weather(city):
 
 @app.route('/weather')
 def weather():
-    city = request.args.get('city')
+    city = request.args.get('city', 'New York')
     if not city:
         return jsonify({"error": "Please provide a city parameter"}), 400
     
