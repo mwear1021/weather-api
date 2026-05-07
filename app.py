@@ -11,12 +11,13 @@ load_dotenv()
 WEATHER_KEY = os.getenv('WEATHER_API_KEY')
 app = Flask(__name__)
 
+
 def get_weather(city):
     geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city},&limit=1&appid={WEATHER_KEY}"
     geo_data = requests.get(geo_url).json()
     # print(geo_data)
 
-    #safety check
+    # safety check
     if not geo_data:
         return None
     
@@ -26,7 +27,7 @@ def get_weather(city):
     # weather url
     weather_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=imperial&appid={WEATHER_KEY}"
 
-    #get API data
+    # get API data
     weather_data = requests.get(weather_url).json()
 
     return {
@@ -36,21 +37,22 @@ def get_weather(city):
         "conditions": weather_data['weather'][0]['main']
     }
 
+
 @app.route('/')
 def redirect_to_weather():
     return redirect('/weather?city=New%20York')
+
 
 @app.route('/weather')
 def weather():
     city = request.args.get('city', 'New York')
     if not city:
-        return jsonify({"error": "Please provide a city parameter"}), 400
-    
+        return jsonify({"error": "Please provide a city parameter"}), 400   
     result = get_weather(city)
     if not result:
-        return jsonify({"error": f"City '{city}' not found"}), 404
-    
+        return jsonify({"error": f"City '{city}' not found"}), 404    
     return jsonify(result)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
