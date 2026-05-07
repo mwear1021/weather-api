@@ -2,7 +2,7 @@
 
 A Flask REST API that fetches and returns current weather data for a given city using the OpenWeatherMap API. Containerized with Docker and deployed on Render with a full CI/CD pipeline via GitHub Actions.
 
-**Live:** https://weathercommandcentercli.onrender.com/weather
+**Live:** https://weathercommandcentercli.onrender.com
 
 ## Features
 - Returns current temperature, feels-like temperature, and weather conditions as JSON
