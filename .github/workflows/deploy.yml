@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches:
+            - main
+            - feature/deployment_action
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with: 
+                python-version: '3.12'
+            
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Run basic smoke test
+              env:
+                WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+              run: python -c "from app import get_weather; print(get_weather('London'))"
+
+            - name: Trigger Render deploy
+              run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
